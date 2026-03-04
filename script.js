@@ -163,7 +163,7 @@ const els = {
   copyBtn: document.getElementById("copyBtn"),
   genBtn: document.getElementById("genBtn"),
   lengthRange: document.getElementById("lengthRange"),
-  length: document.getElementById("length"),
+  lengthValue: document.getElementById("lengthValue"),
   include: document.getElementById("include"),
   lower: document.getElementById("lower"),
   upper: document.getElementById("upper"),
@@ -206,7 +206,6 @@ function applyLanguage() {
 
   els.include.placeholder = tr.includePh;
 
-  // re-evaluar etiquetas dinámicas
   if (els.password.value) {
     checkStrengthAndCrack(els.password.value);
   }
@@ -235,7 +234,6 @@ function buildCharset() {
 }
 
 function parseIncludeTerms(raw) {
-  // separa por coma y limpia espacios
   return raw
     .split(",")
     .map(s => s.trim())
@@ -245,11 +243,11 @@ function parseIncludeTerms(raw) {
 function generatePassword() {
   const tr = t();
 
-  let length = parseInt(els.length.value, 10);
+  let length = parseInt(els.lengthRange.value, 10);
   if (Number.isNaN(length)) length = 16;
-  length = Math.min(32, Math.max(8, length));
-  els.length.value = String(length);
+  length = Math.min(24, Math.max(6, length));
   els.lengthRange.value = String(length);
+  els.lengthValue.textContent = String(length);
 
   const charset = buildCharset();
   if (!charset) {
@@ -258,14 +256,12 @@ function generatePassword() {
   }
 
   const terms = parseIncludeTerms(els.include.value || "");
-  const includeBlock = terms.join(""); // quedan juntos (sin comas ni espacios)
-  // Si querés que queden separados, podrías usar terms.join("-") pero dijiste que vaya junto.
+  const includeBlock = terms.join("");
 
-  // si el bloque a incluir no entra, aumentamos largo (hasta 32)
   if (includeBlock.length > length) {
-    length = Math.min(32, Math.max(8, includeBlock.length));
-    els.length.value = String(length);
+    length = Math.min(24, Math.max(6, includeBlock.length));
     els.lengthRange.value = String(length);
+    els.lengthValue.textContent = String(length);
   }
 
   const remaining = Math.max(0, length - includeBlock.length);
@@ -275,7 +271,6 @@ function generatePassword() {
     randomPart += charset[secureRandomInt(charset.length)];
   }
 
-  // Inserta el bloque completo en posición aleatoria, sin mezclarlo
   if (!includeBlock) {
     els.password.value = randomPart;
   } else {
@@ -293,11 +288,9 @@ async function copyPassword() {
 
   try {
     await navigator.clipboard.writeText(value);
-    // feedback silencioso en UI
     els.copyBtn.textContent = tr.copied;
     setTimeout(() => { els.copyBtn.textContent = tr.copy; }, 900);
   } catch {
-    // fallback
     els.password.focus();
     els.password.select();
     document.execCommand("copy");
@@ -309,7 +302,6 @@ async function copyPassword() {
 function checkStrengthAndCrack(password) {
   const tr = t();
 
-  // Strength score simple
   let score = 0;
   if (password.length >= 12) score++;
   if (/[A-Z]/.test(password)) score++;
@@ -334,36 +326,26 @@ function checkStrengthAndCrack(password) {
     els.strengthText.textContent = tr.strengthVStrong;
   }
 
-  // Crack time estimate (offline fast brute force)
   const charsetSize = estimateCharsetSize(password);
-  const guessesPerSecond = 1e10; // 10B guesses/sec (offline fast, GPU/ASIC-ish)
+  const guessesPerSecond = 1e10; // offline rápido
   const seconds = estimateBruteforceSeconds(password.length, charsetSize, guessesPerSecond);
 
   els.crackTime.textContent = tr.crackLabel + formatDuration(seconds, els.language.value);
 }
 
 function estimateCharsetSize(pw) {
-  // Estima tamaño de alfabeto usado en el password real
   let size = 0;
   if (/[a-z]/.test(pw)) size += 26;
   if (/[A-Z]/.test(pw)) size += 26;
   if (/[0-9]/.test(pw)) size += 10;
-  if (/[^A-Za-z0-9]/.test(pw)) size += 33; // aproximación de símbolos comunes
+  if (/[^A-Za-z0-9]/.test(pw)) size += 33;
   return Math.max(size, 1);
 }
 
 function estimateBruteforceSeconds(length, charsetSize, guessesPerSecond) {
-  // Tiempo esperado promedio ~ mitad del espacio
-  // N = charsetSize^length
-  // t = (N/2) / guessesPerSecond
-  // Usamos logs para evitar overflow.
   const log10N = length * Math.log10(charsetSize);
-  // N/2 => restar log10(2)
   const log10T = log10N - Math.log10(2) - Math.log10(guessesPerSecond);
-  const T = Math.pow(10, log10T);
-
-  // Si es enorme, puede ir a Infinity; lo manejamos en formatDuration
-  return T;
+  return Math.pow(10, log10T);
 }
 
 function formatDuration(seconds, lang) {
@@ -383,30 +365,19 @@ function formatDuration(seconds, lang) {
            lang === "de" ? "unter 1 Sekunde" : "less than 1 second";
   }
 
-  const units = [
-    { s: 60, name: unitName("second", lang) },
-    { s: 60, name: unitName("minute", lang) },
-    { s: 24, name: unitName("hour", lang) },
-    { s: 365, name: unitName("day", lang) }, // convertiremos a años con 365 días
-  ];
+  if (seconds < 60) return `${Math.round(seconds)} ${pluralize("second", Math.round(seconds), lang)}`;
+  const minutes = seconds / 60;
+  if (minutes < 60) return `${Math.round(minutes)} ${pluralize("minute", Math.round(minutes), lang)}`;
+  const hours = minutes / 60;
+  if (hours < 24) return `${Math.round(hours)} ${pluralize("hour", Math.round(hours), lang)}`;
+  const days = hours / 24;
+  if (days < 365) return `${Math.round(days)} ${pluralize("day", Math.round(days), lang)}`;
+  const years = days / 365;
 
-  let value = seconds;
-
-  // seconds -> minutes
-  if (value < 60) return `${Math.round(value)} ${pluralize("second", Math.round(value), lang)}`;
-  value /= 60;
-  if (value < 60) return `${Math.round(value)} ${pluralize("minute", Math.round(value), lang)}`;
-  value /= 60;
-  if (value < 24) return `${Math.round(value)} ${pluralize("hour", Math.round(value), lang)}`;
-  value /= 24; // días
-  if (value < 365) return `${Math.round(value)} ${pluralize("day", Math.round(value), lang)}`;
-  value /= 365; // años
-  if (value < 1000) return `${Math.round(value)} ${pluralize("year", Math.round(value), lang)}`;
-
-  // miles/millones de años, simplificado
-  if (value < 1e6) return `${(value/1e3).toFixed(1)}k ${pluralize("year", 2, lang)}`;
-  if (value < 1e9) return `${(value/1e6).toFixed(1)}M ${pluralize("year", 2, lang)}`;
-  return `${(value/1e9).toFixed(1)}B ${pluralize("year", 2, lang)}`;
+  if (years < 1000) return `${Math.round(years)} ${pluralize("year", Math.round(years), lang)}`;
+  if (years < 1e6) return `${(years/1e3).toFixed(1)}k ${pluralize("year", 2, lang)}`;
+  if (years < 1e9) return `${(years/1e6).toFixed(1)}M ${pluralize("year", 2, lang)}`;
+  return `${(years/1e9).toFixed(1)}B ${pluralize("year", 2, lang)}`;
 }
 
 function unitName(base, lang) {
@@ -423,8 +394,6 @@ function unitName(base, lang) {
 
 function pluralize(base, n, lang) {
   const singular = unitName(base, lang);
-
-  // plural básico por idioma (suficiente para UI)
   if (n === 1) return singular;
 
   if (lang === "es") {
@@ -432,17 +401,14 @@ function pluralize(base, n, lang) {
     if (base === "day") return "días";
     return singular + "s";
   }
-
   if (lang === "fr") {
     if (base === "year") return "ans";
     return singular + "s";
   }
-
   if (lang === "pt") {
     if (base === "year") return "anos";
     return singular + "s";
   }
-
   if (lang === "it") {
     if (base === "hour") return "ore";
     if (base === "year") return "anni";
@@ -451,35 +417,22 @@ function pluralize(base, n, lang) {
     if (base === "second") return "secondi";
     return singular;
   }
-
   if (lang === "de") {
-    // alemán: plural no trivial; simplificamos con el mismo término para UI
     return singular;
   }
-
   return singular + "s";
 }
 
-// Sync range <-> number
+// Events
 els.lengthRange.addEventListener("input", () => {
-  els.length.value = els.lengthRange.value;
+  els.lengthValue.textContent = els.lengthRange.value;
 });
 
-els.length.addEventListener("input", () => {
-  let v = parseInt(els.length.value, 10);
-  if (Number.isNaN(v)) v = 16;
-  v = Math.min(32, Math.max(8, v));
-  els.length.value = String(v);
-  els.lengthRange.value = String(v);
-});
-
-els.language.addEventListener("change", () => {
-  applyLanguage();
-});
-
+els.language.addEventListener("change", applyLanguage);
 els.genBtn.addEventListener("click", generatePassword);
 els.copyBtn.addEventListener("click", copyPassword);
 
 // Init
 applyLanguage();
+els.lengthValue.textContent = els.lengthRange.value;
 generatePassword();
