@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generador de Contraseñas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="card">
+
+      <header class="top">
+        <div class="headings">
+          <h1 id="t_title">Generador de Contraseñas</h1>
+          <p id="t_subtitle">Crea contraseñas seguras en segundos.</p>
+        </div>
+
+        <div class="language">
+          <label for="language" id="t_languageLabel">Idioma</label>
+          <select id="language">
+            <option value="es" selected>Español</option>
+            <option value="en">English</option>
+            <option value="pt">Português</option>
+            <option value="fr">Français</option>
+            <option value="it">Italiano</option>
+            <option value="de">Deutsch</option>
+          </select>
+        </div>
+      </header>
+
+      <section class="password-box">
+        <label id="t_passwordLabel" for="password">Contraseña generada</label>
+
+        <div class="password-row">
+          <input type="text" id="password" readonly autocomplete="off">
+          <button type="button" id="copyBtn"><span id="t_copy">Copiar</span></button>
+        </div>
+
+        <div class="strength">
+          <div class="strength-bar" id="strengthBar"></div>
+        </div>
+
+        <div class="meta">
+          <p id="strengthText"></p>
+          <p id="crackTime"></p>
+        </div>
+
+        <p class="tip" id="t_tip">Tip: usa más de 10 caracteres para mayor seguridad.</p>
+      </section>
+
+      <section class="grid">
+        <div class="box">
+          <label id="t_lengthLabel" for="length">Longitud</label>
+          <div class="range-row">
+            <input type="range" id="lengthRange" min="8" max="32" value="16">
+            <input type="number" id="length" min="8" max="32" value="16">
+          </div>
+        </div>
+
+        <div class="box">
+          <label id="t_includeLabel" for="include">Incluir texto (opcional)</label>
+          <input type="text" id="include" placeholder="Ej: david, auto, 6" autocomplete="off">
+          <p class="note" id="t_includeNote">Podés usar coma “,” para incluir más de una palabra. Se insertará tal cual.</p>
+        </div>
+
+        <div class="box">
+          <label id="t_optionsLabel">Opciones</label>
+          <div class="options">
+            <label><input type="checkbox" id="lower" checked> <span id="t_lower">Minúsculas</span></label>
+            <label><input type="checkbox" id="upper" checked> <span id="t_upper">Mayúsculas</span></label>
+            <label><input type="checkbox" id="nums" checked> <span id="t_nums">Números</span></label>
+            <label><input type="checkbox" id="syms" checked> <span id="t_syms">Símbolos</span></label>
+          </div>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="genBtn"><span id="t_generate">Generar</span></button>
+      </div>
+
+      <footer class="footer" id="t_footer">
+        Privado: la contraseña se genera en tu dispositivo.
+      </footer>
+
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
