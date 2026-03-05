@@ -244,7 +244,7 @@ function generatePassword() {
   const tr = t();
 
   let length = parseInt(els.lengthRange.value, 10);
-  if (Number.isNaN(length)) length = 16;
+  if (Number.isNaN(length)) length = 10;
   length = Math.min(24, Math.max(6, length));
   els.lengthRange.value = String(length);
   els.lengthValue.textContent = String(length);
@@ -436,3 +436,4 @@ els.copyBtn.addEventListener("click", copyPassword);
 applyLanguage();
 els.lengthValue.textContent = els.lengthRange.value;
 generatePassword();
+
