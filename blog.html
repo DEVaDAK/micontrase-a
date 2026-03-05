@@ -1,3 +1,4 @@
+<!-- blog.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,25 +14,26 @@
 </head>
 
 <body>
+  <!-- NAV OUTSIDE CARD -->
+  <header class="site-nav">
+    <div class="container">
+      <a class="brand" href="index.html">Password Tools</a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <a class="nav-link" href="index.html">Inicio</a>
+        <a class="nav-link active" href="blog.html">Blog</a>
+      </nav>
+    </div>
+  </header>
+
   <main class="wrap">
     <section class="card">
 
-      <!-- NAV -->
-      <nav class="nav">
-        <a class="brand" href="index.html">Password Tools</a>
-        <div class="nav-links">
-          <a class="nav-link" href="index.html">Inicio</a>
-          <a class="nav-link active" href="blog.html">Blog</a>
-        </div>
-      </nav>
-
       <header class="page-head">
         <h1>Blog</h1>
-        <p>Guías cortas sobre contraseñas seguras, buenas prácticas y seguridad básica.</p>
+        <p>Buenas prácticas de contraseñas seguras, hábitos simples y recomendaciones claras.</p>
       </header>
 
       <section class="blog-layout">
-
         <!-- LEFT AD -->
         <aside class="ad-side" aria-label="Publicidad lateral izquierda">
           <div class="ad-slot ad-side-slot">
@@ -50,38 +52,38 @@
         <!-- CONTENT -->
         <article class="blog-content">
           <div class="post-card">
-            <h2>Cómo crear una contraseña segura (en 60 segundos)</h2>
+            <h2>Cómo crear una contraseña segura (rápido y bien)</h2>
             <p>
-              Una buena contraseña combina longitud, variedad de caracteres y evita patrones obvios.
-              Como regla general: priorizá 12+ caracteres y evitá datos personales.
+              La seguridad real suele venir de la longitud y de evitar patrones previsibles.
+              Apuntá a 12–16+ caracteres y combiná tipos de caracteres cuando tenga sentido.
             </p>
             <ul>
-              <li>Usá 12–16 caracteres como mínimo.</li>
-              <li>Mezclá mayúsculas, minúsculas, números y símbolos.</li>
-              <li>No reutilices contraseñas.</li>
-              <li>Preferí un gestor de contraseñas si manejás muchas cuentas.</li>
+              <li>12–16 caracteres mínimo (mejor más).</li>
+              <li>Evitá datos personales (nombre, fecha, equipo).</li>
+              <li>No repitas contraseñas entre sitios.</li>
+              <li>Considerá un gestor de contraseñas si administrás muchas cuentas.</li>
             </ul>
           </div>
 
           <div class="post-card">
-            <h2>Errores comunes que arruinan una contraseña</h2>
+            <h2>Errores típicos que te dejan expuesto</h2>
             <p>
-              Los ataques aprovechan patrones repetidos: “123”, “qwerty”, palabras del diccionario o reemplazos previsibles
-              como “a” por “@”. También son un problema las fechas y nombres.
+              La mayoría de contraseñas “hackeadas” caen por listas filtradas y patrones comunes.
+              Si tu clave parece “fácil de adivinar”, probablemente lo sea.
             </p>
             <ul>
-              <li>Usar “Nombre+123” o “Verano2026”.</li>
-              <li>Repetir la misma clave en varias webs.</li>
-              <li>Guardar contraseñas en notas sin protección.</li>
+              <li>“Nombre+123”, “Verano2026”, “qwerty”.</li>
+              <li>Reemplazos obvios: a→@, i→1, o→0.</li>
+              <li>Guardar claves en texto plano (notas sin protección).</li>
             </ul>
           </div>
 
           <div class="post-card">
-            <h2>Checklist rápido de seguridad</h2>
+            <h2>Checklist de seguridad</h2>
             <ul>
-              <li>Activá 2FA (autenticación en dos pasos) cuando esté disponible.</li>
-              <li>Usá un email “principal” protegido con contraseña fuerte y 2FA.</li>
-              <li>Revisá accesos y sesiones activas en servicios críticos.</li>
+              <li>Activá 2FA en email, banco y redes.</li>
+              <li>Revisá sesiones activas y dispositivos conectados.</li>
+              <li>Actualizá contraseñas si hubo filtraciones.</li>
             </ul>
           </div>
         </article>
@@ -100,7 +102,6 @@
             (adsbygoogle = window.adsbygoogle || []).push({});
           </script>
         </aside>
-
       </section>
 
       <!-- BOTTOM AD -->
@@ -116,21 +117,24 @@
         (adsbygoogle = window.adsbygoogle || []).push({});
       </script>
 
-      <footer class="site-footer">
-        <div class="footer-links">
-          <a href="privacy.html">Política de Privacidad</a>
-          <a href="terms.html">Términos</a>
-          <a href="cookies.html">Cookies</a>
-          <a href="contacto.html">Contacto</a>
-          <a href="index.html">Generador</a>
-        </div>
-        <div class="footer-note">
-          © <span id="year"></span> Password Tools. Contenido informativo; no reemplaza asesoramiento profesional.
-        </div>
-      </footer>
-
     </section>
   </main>
+
+  <!-- FOOTER OUTSIDE CARD -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="privacy.html">Política de Privacidad</a>
+        <a href="terms.html">Términos</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="index.html">Generador</a>
+      </div>
+      <div class="footer-note">
+        © <span id="year"></span> Password Tools.
+      </div>
+    </div>
+  </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
