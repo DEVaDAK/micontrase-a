@@ -5,11 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Generador de Contraseñas</title>
   <link rel="stylesheet" href="style.css">
+
+  <!-- AdSense (PLACEHOLDER: reemplazar ca-pub-...) -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
 </head>
 
 <body>
   <main class="wrap">
     <section class="card">
+
+      <!-- NAV -->
+      <nav class="nav">
+        <a class="brand" href="index.html">Password Tools</a>
+        <div class="nav-links">
+          <a class="nav-link active" href="index.html">Inicio</a>
+          <a class="nav-link" href="blog.html">Blog</a>
+        </div>
+      </nav>
 
       <header class="top">
         <div class="headings">
@@ -29,6 +43,19 @@
           </select>
         </div>
       </header>
+
+      <!-- AD TOP (opcional) -->
+      <div class="ad-slot ad-top" aria-label="Publicidad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+             data-ad-slot="1111111111"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
 
       <section class="password-box">
         <label id="t_passwordLabel" for="password">Contraseña generada</label>
@@ -56,7 +83,6 @@
             <label id="t_lengthLabel" for="lengthRange">Longitud</label>
             <span class="lenValue" id="lengthValue">16</span>
           </div>
-
           <input type="range" id="lengthRange" min="6" max="24" value="16">
         </div>
 
@@ -81,8 +107,28 @@
         <button type="button" id="genBtn"><span id="t_generate">Generar</span></button>
       </div>
 
-      <footer class="footer" id="t_footer">
-        Privado: la contraseña se genera en tu dispositivo.
+      <!-- AD BOTTOM (opcional) -->
+      <div class="ad-slot ad-bottom" aria-label="Publicidad">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-XXXXXXXXXXXXXXX"
+             data-ad-slot="2222222222"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+
+      <footer class="site-footer">
+        <div class="footer-links">
+          <a href="privacy.html">Política de Privacidad</a>
+          <a href="terms.html">Términos</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="blog.html">Blog</a>
+        </div>
+        <div class="footer-note" id="t_footer">Privado: la contraseña se genera en tu dispositivo.</div>
       </footer>
 
     </section>
